@@ -24,4 +24,17 @@ RSpec.describe 'ParkingRate' do
     expect(parking_rate.timezone.to_s).to eq('America - Chicago')
     expect(parking_rate.price).to eq(1500)
   end
+
+  it 'validates the parsed data' do
+    parking_rate = ParkingRate.new
+
+    expect(parking_rate).not_to be_valid
+    expect(parking_rate.errors.details.keys) \
+      .to eq(%i(start_time end_time timezone price days))
+
+    parking_rate.days = [:monday]
+    expect(parking_rate).not_to be_valid
+    expect(parking_rate.errors.details.keys) \
+      .to eq(%i(start_time end_time timezone price))
+  end
 end

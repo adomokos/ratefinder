@@ -3,9 +3,12 @@ require 'json'
 
 module Entities
   RSpec.describe ParkingRate do
-    let(:parking_rates) do
+    before(:each) { Globals.reset }
+
+    let(:parking_rates_source) do
       file = File.read('resources/parking_rates.json')
-      JSON.parse(file, :symbolize_names => true)
+      result = JSON.parse(file, :symbolize_names => true)
+      result.fetch(:rates)
     end
     let(:rate_hash) do
       { :days=>'mon,tues,thurs',
@@ -15,7 +18,7 @@ module Entities
       }
     end
 
-    it 'can initialize itself from JSON' do
+    it 'can be parsed from JSON' do
       parking_rate = ParkingRateParser.new(rate_hash).parse
 
       expect(parking_rate.days).to eq(%i(monday tuesday thursday))
@@ -25,8 +28,13 @@ module Entities
       expect(parking_rate.price).to eq(1500)
     end
 
-    it 'validates the parsed data' do
-      parking_rate = ParkingRate.new
+    it 'can be validated' do
+      parking_rate = ParkingRate.new(
+        {:days => nil,
+         :start_time => nil,
+         :end_time => nil,
+         :timezone => nil,
+         :price => nil})
 
       expect(parking_rate).not_to be_valid
       expect(parking_rate.errors.details.keys) \
@@ -36,6 +44,28 @@ module Entities
       expect(parking_rate).not_to be_valid
       expect(parking_rate.errors.details.keys) \
         .to eq(%i(start_time end_time timezone price))
+    end
+
+    it 'can pivot ParkingRate to DailyParkingRates' do
+      parking_rate = ParkingRateParser.new(rate_hash).parse
+      daily_timeslots = ToTimeslotsForDay.convert(parking_rate)
+
+      timeslots = daily_timeslots.select { |_k, v| v.any? }
+      expect(timeslots.length).to eq(3)
+    end
+
+    it 'can collect all Timeslots from the JSON file' do
+      parking_rates = parking_rates_source.map do |prs|
+        ParkingRateParser.new(prs).parse
+      end
+
+      parking_rates.each do |pr|
+        ToTimeslotsForDay.convert(pr)
+      end
+
+      timeslots = Globals.daily_timeslots.select { |_k, v| v.empty? }
+
+      expect(timeslots).to be_empty
     end
   end
 end

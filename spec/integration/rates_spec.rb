@@ -24,7 +24,7 @@ describe 'SpotHero Rates API' do
         run_test!
       end
 
-      response '204', 'invalid user input' do
+      response '422', 'invalid user input' do
         let(:timeslot) do
           { start_time: '2015-07-01T07:00:00-05:00',
             end_time: '2015-07-02T12:00:00-05:00' }

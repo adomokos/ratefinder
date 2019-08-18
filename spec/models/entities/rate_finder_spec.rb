@@ -37,7 +37,7 @@ module Entities
       end_time = '2015-07-04T21:00:00-04:00'
 
       expect { RateFinder.find(start_time, end_time) } \
-        .to raise_error(RateNotFoundError)
+        .to raise_error(Errors::RateNotFoundError)
     end
 
     it 'throws Unavailable error when no timeslot was found' do
@@ -45,7 +45,7 @@ module Entities
       end_time = '2015-07-04T20:00:00+05:00'
 
       expect { RateFinder.find(start_time, end_time) } \
-        .to raise_error(RateNotFoundError)
+        .to raise_error(Errors::RateNotFoundError)
     end
 
     it 'throws InvalidDatesError when start date is after end date' do
@@ -53,7 +53,7 @@ module Entities
       end_time = '2015-07-04T20:00:00+05:00'
 
       expect { RateFinder.find(start_time, end_time) } \
-        .to raise_error(StartDateAfterEndDateError)
+        .to raise_error(Errors::StartDateAfterEndDateError)
     end
 
     it 'throws TimesNotSameDayError when start date is after end date' do
@@ -61,7 +61,7 @@ module Entities
       end_time = '2015-07-05T01:00:00+05:00'
 
       expect { RateFinder.find(start_time, end_time) } \
-        .to raise_error(TimesNotSameDayError)
+        .to raise_error(Errors::TimesNotSameDayError)
     end
   end
 end

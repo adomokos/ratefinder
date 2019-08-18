@@ -1,5 +1,10 @@
 module Api
   module V1
+    class RateFindResult
+      include ActiveModel::Model
+      attr_accessor :result, :msg
+    end
+
     class RatesController < ApplicationController
 
       # POST /api/v1/rates/find
@@ -10,11 +15,19 @@ module Api
 
         begin
           found_rate = Entities::RateFinder.find(start_time, end_time)
-          render :json => found_rate, :status => :ok
-        rescue Entities::TimesNotSameDayError
-          render :nothing => true, :status => 204
+          result = RateFindResult.new(:result => found_rate, :msg => nil)
+
+          render :json => result, :status => :ok
+
+        rescue Entities::Errors::TimesNotSameDayError => err
+          result = RateFindResult.new(:result => nil, :msg => err.message)
+          render :json => result.to_json, :status => 422
+        rescue Entities::Errors::StartDateAfterEndDateError => err
+          result = RateFindResult.new(:result => nil, :msg => err.message)
+          render :json => result.to_json, :status => 422
         end
       end
+
     end
   end
 end

@@ -4,11 +4,12 @@ module Entities
       start_time = Time.parse(start_time_input)
       end_time = Time.parse(end_time_input)
 
-      raise StartDateAfterEndDateError.new('Start time after end time') \
+      raise ::Entities::StartDateAfterEndDateError.new('Start time after end time') \
         if start_time >= end_time
 
-      raise TimesNotSameDayError.new("Start time and end time not on same day") \
-        unless start_time.to_date == end_time.to_date
+      raise ::Entities::TimesNotSameDayError.new( \
+        "Start time and end time not on same day") \
+          unless start_time.to_date == end_time.to_date
 
       timeslots = timeslots_for_time(start_time)
 
@@ -18,7 +19,7 @@ module Entities
 
       return match.price if match
 
-      raise RateNotFoundError.new('No rate was found')
+      raise ::Entities::RateNotFoundError.new('No rate was found')
     end
 
     def self.timeslots_for_time(time)

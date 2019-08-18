@@ -38,6 +38,9 @@
         "responses": {
           "200": {
             "description": "rate found"
+          },
+          "204": {
+            "description": "invalid user input"
           }
         }
       }

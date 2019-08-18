@@ -47,5 +47,13 @@ module Entities
       expect { RateFinder.find(start_time, end_time) } \
         .to raise_error(RateNotFoundError)
     end
+
+    it 'throws InvalidDates error when start date is after end date' do
+      start_time = '2015-07-04T21:00:00+05:00'
+      end_time = '2015-07-04T20:00:00+05:00'
+
+      expect { RateFinder.find(start_time, end_time) } \
+        .to raise_error(StartDateAfterEndDateError)
+    end
   end
 end

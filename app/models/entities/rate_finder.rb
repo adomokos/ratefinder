@@ -4,6 +4,9 @@ module Entities
       start_time = Time.parse(start_time_input)
       end_time = Time.parse(end_time_input)
 
+      raise StartDateAfterEndDateError.new('Start time after end time') \
+        if start_time >= end_time
+
       timeslots = timeslots_for_time(start_time)
 
       match = timeslots.find do |ts|

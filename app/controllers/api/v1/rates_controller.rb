@@ -15,7 +15,11 @@ module Api
 
         begin
           found_rate = Entities::RateFinder.find(start_time, end_time)
-          result = RateFindResult.new(:result => found_rate, :msg => nil)
+          if found_rate
+            result = RateFindResult.new(:result => found_rate, :msg => nil)
+          else
+            result = RateFindResult.new(:result => nil, :msg => 'unavailable')
+          end
 
           render :json => result, :status => :ok
 

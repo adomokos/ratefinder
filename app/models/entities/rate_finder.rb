@@ -1,7 +1,5 @@
 module Entities
   class RateFinder
-    UNAVAILABLE = 'unavailable'.freeze
-
     def self.find(start_time_input, end_time_input)
       start_time = Time.parse(start_time_input)
       end_time = Time.parse(end_time_input)
@@ -21,7 +19,7 @@ module Entities
 
       return match.price if match
 
-      UNAVAILABLE
+      nil
     end
 
     def self.timeslots_for_time(time)

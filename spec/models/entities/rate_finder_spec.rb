@@ -38,7 +38,7 @@ module Entities
 
       result = RateFinder.find(start_time, end_time)
 
-      expect(result).to eq(RateFinder::UNAVAILABLE)
+      expect(result).to be_nil
     end
 
     it 'returns nil when no rate was found' do
@@ -46,7 +46,7 @@ module Entities
       end_time = '2015-07-04T20:00:00+05:00'
 
       result = RateFinder.find(start_time, end_time)
-      expect(result).to eq(RateFinder::UNAVAILABLE)
+      expect(result).to be_nil
     end
 
     it 'throws InvalidDatesError when start date is after end date' do

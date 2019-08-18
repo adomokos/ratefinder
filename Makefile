@@ -1,4 +1,5 @@
 .DEFAULT_GOAL := help
+INSTANCE_NAME := ratefinder_web_1
 
 console: ## Jump into the console and interact with the services
 	bundle exec rails console
@@ -31,11 +32,11 @@ docker-run-tests: ## Run the tests in the container
 .PHONY: docker-run-tests
 
 docker-remove-container: ## Stops and removes the container
-	docker rm -f ratefinder_web_1
+	docker rm -f $(INSTANCE_NAME)
 .PHONY: docker-remove-container
 
 docker-hop-on: ## Jump on the docker instance
-	docker exec -ti ratefinder_web_1 /bin/bash
+	docker exec -ti $(INSTANCE_NAME) /bin/bash
 .PHONY: docker-hop-on
 
 help:

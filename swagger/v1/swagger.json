@@ -1,0 +1,46 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "API V1",
+    "version": "v1"
+  },
+  "paths": {
+    "/api/v1/rates/find": {
+      "post": {
+        "summary": "Finds a rate",
+        "tags": [
+          "Rates"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "timeslot",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "start_time": {
+                  "type": "string"
+                },
+                "end_time": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "start_time",
+                "end_time"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "rate found"
+          }
+        }
+      }
+    }
+  }
+}

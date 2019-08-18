@@ -36,16 +36,17 @@ module Entities
       start_time = '2015-07-04T09:00:00-04:00'
       end_time = '2015-07-04T21:00:00-04:00'
 
-      expect { RateFinder.find(start_time, end_time) } \
-        .to raise_error(Errors::RateNotFoundError)
+      result = RateFinder.find(start_time, end_time)
+
+      expect(result).to eq(RateFinder::UNAVAILABLE)
     end
 
-    it 'throws Unavailable error when no timeslot was found' do
+    it 'returns nil when no rate was found' do
       start_time = '2015-07-04T07:00:00+05:00'
       end_time = '2015-07-04T20:00:00+05:00'
 
-      expect { RateFinder.find(start_time, end_time) } \
-        .to raise_error(Errors::RateNotFoundError)
+      result = RateFinder.find(start_time, end_time)
+      expect(result).to eq(RateFinder::UNAVAILABLE)
     end
 
     it 'throws InvalidDatesError when start date is after end date' do

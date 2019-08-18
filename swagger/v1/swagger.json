@@ -11,12 +11,15 @@
         "tags": [
           "Rates"
         ],
+        "description": "Searches rates based on start time and end time",
         "consumes": [
+          "application/json"
+        ],
+        "produces": [
           "application/json"
         ],
         "parameters": [
           {
-            "name": "timeslot",
             "in": "body",
             "schema": {
               "type": "object",
@@ -37,10 +40,22 @@
         ],
         "responses": {
           "200": {
-            "description": "rate found"
+            "description": "OK",
+            "examples": {
+              "application/json": {
+                "result": 1750,
+                "msg": null
+              }
+            }
           },
-          "204": {
-            "description": "invalid user input"
+          "422": {
+            "description": "invalid user input",
+            "examples": {
+              "application/json": {
+                "result": null,
+                "msg": "Start time after end time"
+              }
+            }
           }
         }
       }

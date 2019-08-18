@@ -7,6 +7,9 @@ module Entities
       raise StartDateAfterEndDateError.new('Start time after end time') \
         if start_time >= end_time
 
+      raise TimesNotSameDayError.new("Start time and end time not on same day") \
+        unless start_time.to_date == end_time.to_date
+
       timeslots = timeslots_for_time(start_time)
 
       match = timeslots.find do |ts|

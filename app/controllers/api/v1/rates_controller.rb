@@ -23,10 +23,8 @@ module Api
 
           render :json => result, :status => :ok
 
-        rescue Entities::Errors::TimesNotSameDayError => err
-          result = RateFindResult.new(:result => nil, :msg => err.message)
-          render :json => result.to_json, :status => 422
-        rescue Entities::Errors::StartDateAfterEndDateError => err
+        rescue Entities::Errors::TimesNotSameDayError, \
+          Entities::Errors::StartDateAfterEndDateError => err
           result = RateFindResult.new(:result => nil, :msg => err.message)
           render :json => result.to_json, :status => 422
         end
